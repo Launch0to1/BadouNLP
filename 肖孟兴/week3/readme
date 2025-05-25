@@ -1,0 +1,34 @@
+需要修改的部分：
+词表：
+  def build_vocab():字符集加上a
+模型：
+  class TorchModel(nn.Module):rnn层，分类层，损失函数
+  self.rnn = nn.RNN(vector_dim,vector_dim,batch_first=True)
+  self.classify = nn.Linear(vector_dim, sentence_length + 1)
+  self.loss = nn.functional.cross_entropy
+  forward(self, x, y=None):output：[batchsize,sentence,dim],hidden:[1,batchsize,dim]
+建立数据集：
+  build_sample(vocab, sentence_length):a的位置
+  build_dataset(sample_length, vocab, sentence_length):label是long类型
+测试：
+  evaluate(model, vocab, sample_length):输出最大可能
+预测：
+  predict(model_path, vocab_path, input_strings):打印结果
+
+output分类：
+  第10轮平均loss:0.028658
+  本次预测集中共有1006个正样本，-806个负样本
+  正确预测个数：200, 正确率：1.000000
+hidden分类：
+  第10轮平均loss:0.033510
+  本次预测集中共有1037个正样本，-837个负样本
+  正确预测个数：200, 正确率：1.000000
+pool分类：
+  第10轮平均loss:0.451925
+  本次预测集中共有1069个正样本，-869个负样本
+  正确预测个数：158, 正确率：0.790000
+
+词级别任务（如 NER）	rnn_out	每个词有自己的上下文表示
+句子级别任务（如情感分析）	hidden[-1] 或 rnn_out[:, -1, :]	表示整个句子的综合语义
+hidden[-1] 的含义	最后一层的隐藏状态	如果只有 1 层，等同于最后一步的输出
+  
